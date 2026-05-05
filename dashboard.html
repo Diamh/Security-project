@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head><title>Dashboard</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+ 
+<body>
+  
+  <h1>Welcome {{ full_name }}</h1>
+  <p>You are now logged in to your dashboard.</p>
+  <p>What do you want to do today?</p>
+ 
+  <!-- Comment/Profile field: used to demonstrate XSS vulnerability and fix -->
+  <h3>Leave a Comment:</h3>
+  <form method="POST" action="/dashboard">
+    <input type="text" name="comment" placeholder="Write a comment..." size="50">
+    <button type="submit">Post</button>
+  </form>
+ 
+  <!-- Display all submitted comments -->
+  <h3>Comments:</h3>
+  {% for c in comments %}
+    <p>
+      <strong>{{ c.user }}:</strong>
+      {% if safe_mode %}
+        {{ c.text | safe }}
+      {% else %}
+        {{ c.text }}
+      {% endif %}
+    </p>
+  {% else %}
+    <p>No comments yet.</p>
+  {% endfor %}
+ 
+  <form action="/logout">
+    <button type="submit">Logout</button>
+  </form>
+ 
+</body>
+</html>
