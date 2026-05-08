@@ -173,7 +173,9 @@ def register():
 def admin():
     if 'username' not in flask.session:
         return flask.redirect('/login')
-
+    # In the vulnerable version, any logged-in user could access /admin.
+    # Here we check the user's role stored in the session.
+    # Only users with role='admin' in the database are allowed through.
     if flask.session.get('role') != 'admin':
         return "Access Denied: Admins only"
 
