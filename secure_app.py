@@ -139,6 +139,11 @@ def register():
         password = flask.request.form['password']
 
         #hash using bcrypt (secure)
+        # bcrypt is used instead of MD5 because it is specifically designed for password hashing.
+        # Unlike MD5, bcrypt automatically adds a random salt, meaning the same password
+        # generates different hashes each time.
+        # bcrypt is also computationally expensive, making brute-force attacks much harder.
+        # This improves password security and protects against rainbow table attacks.
         hashed_password = bcrypt.hashpw(password.encode(), bcrypt.gensalt()).decode()
 
         conn = sqlite3.connect("users.db")
