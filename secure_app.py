@@ -72,7 +72,9 @@ def login():
         ) 
         user = c.fetchone()
         
-
+        # bcrypt.checkpw() securely verifies whether the entered password matches
+        # the stored bcrypt hash. Unlike MD5, bcrypt hashes cannot be compared directly
+        # because bcrypt generates a different hash each time due to salting.
         if user and bcrypt.checkpw(password.encode(), user[4].encode()): #find user by username, get the stored bcrypt from the database using user[4], and uses .checkpw to check if they match
             flask.session['username'] = user[0]
             flask.session['first_name'] = user[1]
